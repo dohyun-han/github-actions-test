@@ -6,25 +6,15 @@ on:
   pull_request:
     branches: [main]
 
-inputs:
-  status:
-    required: false
-    default: "failure"
-  slack_incoming_url:
-    required: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Send slack
+        if: ${{ success() }}
         shell: bash
         run: |
-          if [ "${{ inputs.status }}" = "success" ]; then
-            EMOTICON="✅"
-          else
-            EMOTICON="⛔"
-          fi
+          EMOTICON="✅"
           MSG="{ \"text\":\">${EMOTICON} workflow (<https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}|${GITHUB_WORKFLOW}>) in <https://github.com/${GITHUB_REPOSITORY}|${GITHUB_REPOSITORY}>\n><https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}/checks|${GITHUB_JOB}> job ${{ inputs.status }}, branch=\`${GITHUB_REF#refs/heads/}\`\"}"
           curl -X POST -H 'Content-type: application/json' --data "${MSG}" "${{ inputs.slack_incoming_url }}"
