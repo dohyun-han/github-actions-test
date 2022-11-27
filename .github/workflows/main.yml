@@ -14,7 +14,7 @@ jobs:
         with:
           status: ${{ job.status }}
           author_name: ${{ github.event.pull_request.html_url }} # default: 8398a7@action-slack
-          fields: repo,message,commit,author,ref
+          fields: pullRequest,commit,author,ref
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: success() # Pick up events even if the job fails or is canceled.
