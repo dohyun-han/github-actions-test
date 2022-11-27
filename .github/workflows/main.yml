@@ -13,7 +13,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: Github Action Test # default: 8398a7@action-slack
+          author_name: ${{ github.event.pull_request.html_url }} # default: 8398a7@action-slack
           fields: repo,message,commit,author,ref
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
