@@ -15,7 +15,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: 리뷰해주세요 # default: 8398a7@action-slack
+          author_name: 리뷰 # default: 8398a7@action-slack
           fields: repo,commit,author,action,ref,workflow,job
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
