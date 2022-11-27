@@ -6,17 +6,26 @@ on:
   pull_request:
     branches: [main]
 
+inputs:
+  status:
+    required: false
+    default: "failure"
+  slack_incoming_url:
+    required: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: action-slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          author_name: Github Action Test # default: 8398a7@action-slack
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: always() # Pick up events even if the job fails or is canceled.
+      - name: Send slack
+      shell: bash
+      run: |
+        if [ "${{ inputs.status }}" = "success" ]; then
+          EMOTICON="✅"
+        else
+          EMOTICON="⛔"
+        fi
+        MSG="{ \"text\":\">${EMOTICON} workflow (<https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}|${GITHUB_WORKFLOW}>) in <https://github.com/${GITHUB_REPOSITORY}|${GITHUB_REPOSITORY}>\n><https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}/checks|${GITHUB_JOB}> job ${{ inputs.status }}, branch=\`${GITHUB_REF#refs/heads/}\`\"}"
+        curl -X POST -H 'Content-type: application/json' --data "${MSG}" "${{ inputs.slack_incoming_url }}"
+    
