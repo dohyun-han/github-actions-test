@@ -1,8 +1,6 @@
 name: test
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
@@ -15,8 +13,8 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: 리뷰 # default: 8398a7@action-slack
-          fields: repo,commit,author,action,ref,workflow,job
+          author_name: Github Action Test # default: 8398a7@action-slack
+          fields: repo,message,commit,author,ref
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: success() # Pick up events even if the job fails or is canceled.
