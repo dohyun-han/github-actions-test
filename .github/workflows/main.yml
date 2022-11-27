@@ -11,10 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send slack
-        if: ${{ success() }}
-        shell: bash
-        run: |
-          EMOTICON="✅"
-          MSG="{ \"text\":\">${EMOTICON} workflow (<https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}|${GITHUB_WORKFLOW}>) in <https://github.com/${GITHUB_REPOSITORY}|${GITHUB_REPOSITORY}>\n><https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}/checks|${GITHUB_JOB}>, branch=\`${GITHUB_REF#refs/heads/}\`\"}"
-          curl -X POST -H 'Content-type: application/json' --data "${MSG}" "${{ secrets.SLACK_WEBHOOK_URL }}"
+      - name: action-slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: 리뷰해주세요 # default: 8398a7@action-slack
+          fields: repo,commit,author,action,ref,workflow,job
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: success() # Pick up events even if the job fails or is canceled.
