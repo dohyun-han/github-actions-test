@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - develop
-      - master
+      - main
   pull_request:
     branches:
       - "**"
@@ -31,7 +31,7 @@ jobs:
 
       # 테스트 수행과 그 테스트 결과를 xml파일로 생성합니다.
       - name: Run tests
-        run: yarn test:report
+        run: npm test:report
 
       # 테스트 결과를 담은 xml 파일을 레포트로 변환합니다.
       - name: Test Report
