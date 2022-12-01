@@ -1,46 +1,18 @@
-name: pull request
-
+name: "coverage"
 on:
-  push:
-    branches:
-      - develop
-      - main
   pull_request:
     branches:
-      - "**"
-
-defaults:
-  run:
-    working-directory: ./actions
-
+      - master
+      - main
 jobs:
-  build:
+  coverage:
     runs-on: ubuntu-latest
-
     steps:
-      # 해당 저장소의 코드를 가져옵니다.
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      # Node 16 버전을 사용합니다.
-      - name: Install node
-        uses: actions/setup-node@v2
-
-      # 설치된 yarn을 통해 패키지를 설치합니다.
-      - name: Install dependencies
-        run: npm install
-
-      # 테스트 수행과 그 테스트 결과를 xml파일로 생성합니다.
-      - name: Run tests
-        run: npm run test:report
-
-      # 테스트 결과를 담은 xml 파일을 레포트로 변환합니다.
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: success() || failure() # run this step even if previous step failed
+      - uses: actions/checkout@v3
+      - uses: ArtiomTr/jest-coverage-report-action@v2
+        id: coverage
         with:
-          name: test-results
-          path: ./actions/junit.xml
-          fail-on-error: "false"
-          reporter: jest-junit # Format of test results
-          token: ${{ secrets.GITHUB_TOKEN }}
+          output: report-markdown
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: ${{ steps.coverage.outputs.report }}
