@@ -10,6 +10,9 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
