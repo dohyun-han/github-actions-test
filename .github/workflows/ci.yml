@@ -1,0 +1,20 @@
+name: ci
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Compose test db
+        run: docker-compose -f docker-compose.test.yml up -d --build
+
+      - name: Test and build
+        run: ./gradlew clean build
