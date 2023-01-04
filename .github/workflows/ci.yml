@@ -18,11 +18,24 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          host port: 3308
+          collation server: utf8mb4_unicode_ci
+          mysql database: 'test'
+          mysql version: '8.0'
+          mysql user: 'test'
+          mysql password: '1234'
+          mysql root password: '1234'
 
-      - name: Compose test db
-        run: docker-compose -f docker-compose.test.yml up -d --build
+      - name: Setup Redis
+        uses: supercharge/redis-github-action@1.4.0
+        with:
+          redis-port: 6380
+
+#      - name: Compose test db
+#        run: docker-compose -f docker-compose.test.yml up -d --build
 
       - name: Test and build
         run: ./gradlew clean build
