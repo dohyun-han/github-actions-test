@@ -1,6 +1,6 @@
 name: ci
 
-on: [pull_request]
+on: [ pull_request ]
 
 jobs:
   build:
@@ -10,7 +10,21 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      - uses: actions/setup-java@v3
+      - name: Setup MySQL
+        uses: samin/mysql-action@v1
+        with:
+          collation server: 'utf8mb4_unicode_ci'
+          mysql version: '8.0'
+          mysql database: 'test'
+          mysql root password: 1234
+
+      - name: Setup Redis
+        uses: supercharge/redis-github-action@1.4.0
+        with:
+          redis-port: 6380
+
+      - name: Setup Java17
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -18,15 +32,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Setup MySQL
-        uses: samin/mysql-action@v1
-        with:
-          collation server: 'utf8mb4_unicode_ci'
-          mysql version: '8.0'
-          mysql database: 'test'
-          mysql user: 'test'
-          mysql password: 1234
-          mysql root password: 1234
+      #      - name: Compose test db
+      #        run: docker-compose -f docker-compose.test.yml up -d --build
 
       - name: Wait for MySQL
         run: |
@@ -34,13 +41,5 @@ jobs:
             sleep 1
           done
 
-      - name: Setup Redis
-        uses: supercharge/redis-github-action@1.4.0
-        with:
-          redis-port: 6380
-
-#      - name: Compose test db
-#        run: docker-compose -f docker-compose.test.yml up -d --build
-
-      - name: Test and build
-        run: ./gradlew clean build
+      - name: Test
+        run: ./gradlew clean test
