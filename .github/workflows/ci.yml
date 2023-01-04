@@ -19,19 +19,14 @@ jobs:
         run: chmod +x gradlew
 
       - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
+        uses: samin/mysql-action@v1
         with:
           host port: 3308
-          collation server: 'utf8mb4_unicode_ci'
+          character set server: 'utf8mb4_unicode_ci'
           mysql version: '8.0'
           mysql database: 'test'
-          mysql root password: 1234
-
-      - name: Wait for MySQL
-        run: |
-          while ! mysqladmin ping --host=127.0.0.1 --password=1234 --silent; do
-            sleep 1
-          done
+          mysql user: 'test'
+          mysql password: 1234
 
       - name: Setup Redis
         uses: supercharge/redis-github-action@1.4.0
