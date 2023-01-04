@@ -21,11 +21,18 @@ jobs:
       - name: Setup MySQL
         uses: samin/mysql-action@v1
         with:
-          character set server: 'utf8mb4_unicode_ci'
+          collation server: 'utf8mb4_unicode_ci'
           mysql version: '8.0'
           mysql database: 'test'
           mysql user: 'test'
           mysql password: 1234
+          mysql root password: 1234
+
+      - name: Wait for MySQL
+        run: |
+          while ! mysqladmin ping --host=127.0.0.1 --password=1234 --silent; do
+            sleep 1
+          done
 
       - name: Setup Redis
         uses: supercharge/redis-github-action@1.4.0
