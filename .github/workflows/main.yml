@@ -1,16 +1,16 @@
 name: test
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: action-slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          author_name: ${{ github.event.pull_request.html_url }} # default: 8398a7@action-slack
-          fields: pullRequest,commit,author,ref
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: success() # Pick up events even if the job fails or is canceled.
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: action-slack
+#        uses: 8398a7/action-slack@v3
+#        with:
+#          status: ${{ job.status }}
+#          author_name: ${{ github.event.pull_request.html_url }} # default: 8398a7@action-slack
+#          fields: pullRequest,commit,author,ref
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+#        if: success() # Pick up events even if the job fails or is canceled.
