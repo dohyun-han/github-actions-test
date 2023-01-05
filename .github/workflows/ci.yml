@@ -6,20 +6,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3308:3306
+        env:
+          MYSQL_DATABASE: 'test'
+          MYSQL_USER: 'test'
+          MYSQL_PASSWORD: 1234
+          MYSQL_ROOT_PASSWORD: 1234
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Setup MySQL
-        uses: samin/mysql-action@v1
-        with:
-          host port: 3308
-          container port: 3306
-          collation server: 'utf8mb4_unicode_ci'
-          mysql version: '8.0'
-          mysql database: 'test'
-          mysql user: 'test'
-          mysql password: 1234
+#      - name: Setup MySQL
+#        uses: samin/mysql-action@v1
+#        with:
+#          host port: 3308
+#          container port: 3306
+#          collation server: 'utf8mb4_unicode_ci'
+#          mysql version: '8.0'
+#          mysql database: 'test'
+#          mysql user: 'test'
+#          mysql password: 1234
 
       - name: Setup Redis
         uses: supercharge/redis-github-action@1.4.0
@@ -40,7 +55,7 @@ jobs:
 
       - name: Wait for MySQL
         run: |
-          while ! mysqladmin ping --host=127.0.0.1 --password=1234 --silent; do
+          while ! mysqladmin ping --host=127.0.0.1 --port=3308 --password=1234 --silent; do
             sleep 1
           done
 
