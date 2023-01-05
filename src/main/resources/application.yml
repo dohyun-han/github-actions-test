@@ -42,24 +42,3 @@ spring:
     redis:
       host: localhost
       port: 6380
----
-# test config
-spring:
-  config:
-    activate:
-      on-profile: "test"
-  datasource:
-    url: "jdbc:mysql://localhost:3308/test?serverTimezone=Asia/Seoul"
-    username: test
-    password: 1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-    open-in-view: true
-  data:
-    redis:
-      host: localhost
-      port: 6380
----
