@@ -13,6 +13,8 @@ jobs:
       - name: Setup MySQL
         uses: samin/mysql-action@v1
         with:
+          host port: 3308
+          container port: 3306
           collation server: 'utf8mb4_unicode_ci'
           mysql version: '8.0'
           mysql database: 'test'
