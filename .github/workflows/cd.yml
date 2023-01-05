@@ -41,14 +41,13 @@ jobs:
         run: chmod +x gradlew && ./gradlew bootJar
 
       - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v3.2.0
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
           tags: |
-            ghcr.io/${{ github.repository_owner }}:latest
-            ghcr.io/${{ github.repository_owner }}:${{ steps.tag_version.outputs.new_tag }}
+            ghcr.io/${{ github.repository_owner }}/github-actions-test:latest
+            ghcr.io/${{ github.repository_owner }}/github-actions-test:${{ steps.tag_version.outputs.new_tag }}
           push: true
 
 #  CD:
