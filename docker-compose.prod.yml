@@ -10,10 +10,6 @@ services:
     platform: linux/x86_64
     ports:
       - "8081:8080"
-    depends_on:
-      - db
-    networks:
-      - backbone
 
   spring2:
     container_name: spring2
@@ -24,10 +20,6 @@ services:
     platform: linux/x86_64
     ports:
       - "8082:8080"
-    depends_on:
-      - db
-    networks:
-      - prod
 
   db:
     container_name: db
@@ -46,8 +38,6 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
-    networks:
-      - prod
 
   redis:
     container_name: redis
@@ -56,9 +46,3 @@ services:
     restart: always
     ports:
       - "6379:6379"
-    networks:
-      - prod
-
-networks:
-  prod:
-    driver: bridge
