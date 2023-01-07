@@ -1,1 +1,1 @@
-set $service_url http://127.0.0.1:8081;
+set $service_url http://spring1:8081;
