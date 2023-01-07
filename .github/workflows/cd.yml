@@ -53,8 +53,8 @@ jobs:
           context: .
           file: ./Dockerfile
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ REPOSITORY }}:latest
-            ghcr.io/${{ github.repository_owner }}/${{ REPOSITORY }}:${{ steps.tag_version.outputs.new_tag }}
+            ghcr.io/${{ github.repository_owner }}/${{ env.REPOSITORY }}:latest
+            ghcr.io/${{ github.repository_owner }}/${{ env.REPOSITORY }}:${{ steps.tag_version.outputs.new_tag }}
           push: true
 
   deploy:
@@ -83,7 +83,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           source: './docker-compose.prod.yml,./script,./nginx'
-          target: ${{ REPOSITORY }}
+          target: ${{ env.REPOSITORY }}
 
       - name: Deploy
         uses: appleboy/ssh-action@v0.1.6
@@ -93,6 +93,6 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cp -r ~/${{ REPOSITORY }}/nginx ~/nginx && rm -rf ~/${{ REPOSITORY }}/nginx
-            cd ~/${{ REPOSITORY }}
+            cp -r ~/${{ env.REPOSITORY }}/nginx ~/nginx && rm -rf ~/${{ env.REPOSITORY }}/nginx
+            cd ~/${{ env.REPOSITORY }}
             sudo chmod +x ./script/deploy.sh && ./script/deploy.sh
