@@ -1,10 +1,5 @@
 #! /bin/bash
 
-echo "> image pull"
-
-# pull image
-docker pull ghcr.io/dohyeon-han/github-actions-test:latest
-
 echo "> docker container down"
 
 # docker down

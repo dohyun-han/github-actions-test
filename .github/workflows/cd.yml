@@ -2,11 +2,6 @@ name: cd
 
 on: [ pull_request ]
 
-env:
-  MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-  MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-  MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-
 jobs:
   push-docker-image:
     runs-on: ubuntu-latest
@@ -44,7 +39,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.access_token }}
+          password: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Build with Gradle
         run: chmod +x gradlew && ./gradlew bootJar
@@ -84,7 +79,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
-          source: './docker-compose.prod.yml,./script/deploy.sh'#,backend/nginx/prod/nginx.conf,
+          source: './docker-compose.prod.yml,./script,./nginx'
           target: 'github-actions-test'
 
       - name: Deploy
@@ -96,5 +91,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd github-actions-test
-            sudo chmod +x ./script/deploy.sh
-            ./script/deploy.sh
+            sudo chmod +x ./script/deploy.sh && ./script/deploy.sh
