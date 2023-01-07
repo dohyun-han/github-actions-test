@@ -29,10 +29,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: test
-      MYSQL_USER: prod
-      MYSQL_PASSWORD: 1234
-      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ~/project-volume/db:/var/lib/mysql
     command:

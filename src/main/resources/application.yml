@@ -49,9 +49,9 @@ spring:
     activate:
       on-profile: "prod"
   datasource:
-    url: "jdbc:mysql://db:3306/test?serverTimezone=Asia/Seoul"
-    username: prod
-    password: 1234
+    url: jdbc:mysql://db:3306/${MYSQL_DATABASE}?serverTimezone=Asia/Seoul
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true

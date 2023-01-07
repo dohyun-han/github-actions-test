@@ -2,6 +2,11 @@ name: cd
 
 on: [ pull_request ]
 
+env:
+  MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+  MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+  MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+
 jobs:
   push-docker-image:
     runs-on: ubuntu-latest
@@ -21,11 +26,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-
-      #      - name: backend environment setting
-      #        run: |
-      #          touch .env.production
-      #          echo -e ${{ secrets.BACKEND_PRODUCTION_ENVIRONMENT }} > .env.production
 
       - name: Set up Docker buildx
         uses: docker/setup-buildx-action@v2
@@ -50,15 +50,34 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/github-actions-test:${{ steps.tag_version.outputs.new_tag }}
           push: true
 
-  cd:
-    needs: [push-docker-image]
+  deploy:
+    needs: [ push-docker-image ]
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: copy docker compose & config file into production server
+      - name: Set application.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./src/main/resources/application.yml
+        env:
+          spring.datasource.url: jdbc:mysql://db:3306/${{ secrets.MYSQL_DATABASE }}?serverTimezone=Asia/Seoul
+          spring.datasource.username: ${{ secrets.MYSQL_USERNAME }}
+          spring.datasource.password: ${{ secrets.MYSQL_PASSWORD }}
+
+      - name: Set docker-compose.prod.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./docker-compose.prod.yml
+        env:
+          services.db.environment.MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          services.db.environment.MYSQL_USER: ${{ secrets.MYSQL_USERNAME }}
+          services.db.environment.MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          services.db.environment.MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+
+      - name: Copy docker compose & config file into production server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_IP }}
@@ -68,7 +87,7 @@ jobs:
           source: './docker-compose.prod.yml,./script/deploy.sh'#,backend/nginx/prod/nginx.conf,
           target: 'github-actions-test'
 
-      - name: deploy
+      - name: Deploy
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.SSH_IP }}
