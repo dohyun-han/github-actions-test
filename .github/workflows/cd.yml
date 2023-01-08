@@ -102,5 +102,4 @@ jobs:
             fi
             cp -r ~/${{ env.REPOSITORY }}/nginx ~ && rm -rf ~/${{ env.REPOSITORY }}/nginx
             cd ~/${{ env.REPOSITORY }}
-            sudo chmod +x ./script/*.sh
-            ./script/deploy.sh && ./script/health.sh
+            sudo chmod +x ./script/*.sh && ./script/deploy.sh && ./script/health.sh
