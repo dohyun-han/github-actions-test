@@ -100,4 +100,3 @@ jobs:
             cd ~/${{ env.REPOSITORY }}
             sudo chmod +x ./script/*.sh
             ./script/deploy.sh
-#            ./script/stop.sh && ./script/start.sh && ./script/health.sh && ./script/switch.sh
