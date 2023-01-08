@@ -18,5 +18,8 @@ else
   echo "> 구동 중인 유휴 spring container가 없으므로 종료하지 않습니다."
 fi
 
+echo "> Latest image pull"
+docker pull ghcr.io/dohyeon-han/github-actions-test:latest
+
 echo "> $IDLE_CONTAINER container 실행"
 docker-compose -f docker-compose.prod.yml up "$IDLE_CONTAINER" -d --build
