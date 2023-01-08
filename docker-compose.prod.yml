@@ -11,19 +11,19 @@ services:
     ports:
       - "8081:8080"
     depends_on:
-      - db
+      - mysql
 
   spring2:
     container_name: spring2
+    restart: always
     image: ghcr.io/dohyeon-han/github-actions-test:latest
     environment:
       SERVER_MODE: prod
-    restart: always
     platform: linux/x86_64
     ports:
       - "8082:8080"
     depends_on:
-      - db
+      - mysql
 
   nginx:
     container_name: nginx
@@ -39,10 +39,10 @@ services:
     environment:
       - TZ=Asia/Seoul
     depends_on:
-      - db
+      - mysql
 
-  db:
-    container_name: db
+  mysql:
+    container_name: mysql
     image: mysql:8.0
     platform: linux/x86_64
     restart: always
@@ -54,7 +54,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - ~/project-volume/db:/var/lib/mysql
+      - ~/project-volume/mysql:/var/lib/mysql
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
