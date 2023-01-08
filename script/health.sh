@@ -5,7 +5,7 @@ ABS_DIR=$(dirname "$ABS_PATH")
 source "$ABS_DIR"/profile.sh
 source "$ABS_DIR"/switch.sh
 
-IDLE_PORT=$(find_idle_prot)
+IDLE_PORT=$(find_idle_port)
 
 echo "> Health check 시작"
 echo "> IDLE_CONTAINER: $IDLE_PORT"
