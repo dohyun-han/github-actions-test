@@ -26,13 +26,12 @@ do
     IDLE_CONTAINER=$(find_idle_profile)
     docker-compose -f docker-compose.prod.yml rm -s -v -f "$IDLE_CONTAINER"
 
-    echo "> none tag image 삭제"
-    docker rmi $(docker images -f "dangling=true" -q)
-
     break
   else
     echo "> 응답 실패"
     echo "> Health check: $RESPONSE"
+    echo "> 실패한 latest image 삭제"
+    docker rmi ghcr.io/dohyeon-han/github-actions-test:latest
   fi
 
   if [ "$RETRY_COUNT" -eq 10 ]

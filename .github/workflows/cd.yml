@@ -100,7 +100,7 @@ jobs:
             then
               cp -f ~/nginx/conf.d/service-url.inc ~/${{ env.REPOSITORY }}/nginx/conf.d
             fi
-            cp -r ~/${{ env.REPOSITORY }}/nginx ~/nginx && rm -rf ~/${{ env.REPOSITORY }}/nginx
+            cp -r ~/${{ env.REPOSITORY }}/nginx ~ && rm -rf ~/${{ env.REPOSITORY }}/nginx
             cd ~/${{ env.REPOSITORY }}
             sudo chmod +x ./script/*.sh
             ./script/deploy.sh && ./script/health.sh
