@@ -1,5 +1,7 @@
 #! /bin/bash
 
+ORGANIZATION=$1
+REPOSITORY=$2
 ABS_PATH=$(readlink -f "$0")
 ABS_DIR=$(dirname "$ABS_PATH")
 source "$ABS_DIR"/profile.sh
@@ -31,14 +33,14 @@ do
     echo "> 응답 실패"
     echo "> Health check: $RESPONSE"
     echo "> 실패한 latest image 삭제"
-    docker rmi ghcr.io/dohyeon-han/github-actions-test:latest
+    docker rmi ghcr.io/"$ORGANIZATION"/"$REPOSITORY":latest
   fi
 
   if [ "$RETRY_COUNT" -eq 10 ]
   then
     echo "> Health 실패"
     echo "> Nginx에 연결하지 않고 배포를 종료합니다."
-    docker rmi ghcr.io/dohyeon-han/github-actions-test:latest
+    docker rmi ghcr.io/"$ORGANIZATION"/"$REPOSITORY":latest
     exit 1
   fi
 

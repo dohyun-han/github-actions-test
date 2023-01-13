@@ -76,6 +76,8 @@ jobs:
           services.mysql.environment.MYSQL_USER: ${{ secrets.MYSQL_USERNAME }}
           services.mysql.environment.MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           services.mysql.environment.MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          services.spring1.image: ghcr.io/${{ github.repository_owner }}/${{ env.REPOSITORY }}:latest
+          services.spring2.image: ghcr.io/${{ github.repository_owner }}/${{ env.REPOSITORY }}:latest
 
       # 파일을 ssh를 통해 서버로 복사
       - name: Copy docker compose & Scripts & Nginx
@@ -102,4 +104,6 @@ jobs:
             fi
             cp -r ~/${{ env.REPOSITORY }}/nginx ~ && rm -rf ~/${{ env.REPOSITORY }}/nginx
             cd ~/${{ env.REPOSITORY }}
-            sudo chmod +x ./script/*.sh && ./script/deploy.sh && ./script/health.sh
+            sudo chmod +x ./script/*.sh
+            ./script/deploy.sh ${{ github.repository_owner }} ${{ env.REPOSITORY }}
+            ./script/health.sh ${{ github.repository_owner }} ${{ env.REPOSITORY }}

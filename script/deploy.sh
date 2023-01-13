@@ -1,5 +1,7 @@
 #! /bin/bash
 
+ORGANIZATION=$1
+REPOSITORY=$2
 ABS_PATH=$(readlink -f "$0")
 ABS_DIR=$(dirname "$ABS_PATH")
 source "$ABS_DIR"/profile.sh
@@ -18,13 +20,13 @@ else
   echo "> 구동 중인 유휴 spring container가 없으므로 종료하지 않습니다."
 fi
 
-if [[ "$(docker images -q ghcr.io/dohyeon-han/github-actions-test:latest 2> /dev/null)" != "" ]]; then
+if [[ "$(docker images -q ghcr.io/"$ORGANIZATION"/"$REPOSITORY":latest 2> /dev/null)" != "" ]]; then
   echo "> latest image tag를 old로 변경"
-  docker rmi ghcr.io/dohyeon-han/github-actions-test:tmp
-  docker tag ghcr.io/dohyeon-han/github-actions-test:old ghcr.io/dohyeon-han/github-actions-test:tmp
-  docker rmi ghcr.io/dohyeon-han/github-actions-test:old
-  docker tag ghcr.io/dohyeon-han/github-actions-test:latest ghcr.io/dohyeon-han/github-actions-test:old
-  docker rmi ghcr.io/dohyeon-han/github-actions-test:latest
+  docker rmi ghcr.io/"$ORGANIZATION"/"$REPOSITORY":tmp
+  docker tag ghcr.io/"$ORGANIZATION"/"$REPOSITORY":old ghcr.io/"$ORGANIZATION"/"$REPOSITORY":tmp
+  docker rmi ghcr.io/"$ORGANIZATION"/"$REPOSITORY":old
+  docker tag ghcr.io/"$ORGANIZATION"/"$REPOSITORY":latest ghcr.io/"$ORGANIZATION"/"$REPOSITORY":old
+  docker rmi ghcr.io/"$ORGANIZATION"/"$REPOSITORY":latest
 fi
 
 echo "> $IDLE_CONTAINER container 실행"
