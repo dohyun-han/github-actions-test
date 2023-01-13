@@ -1,6 +1,9 @@
 name: cd
 
-on: [ pull_request ]
+on:
+  push:
+    branches:
+      - 'main'
 
 env:
   REPOSITORY: github-actions-test
