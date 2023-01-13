@@ -32,14 +32,16 @@ do
   else
     echo "> 응답 실패"
     echo "> Health check: $RESPONSE"
-    echo "> 실패한 latest image 삭제"
-    docker rmi ghcr.io/"$ORGANIZATION"/"$REPOSITORY":latest
   fi
 
   if [ "$RETRY_COUNT" -eq 10 ]
   then
     echo "> Health 실패"
     echo "> Nginx에 연결하지 않고 배포를 종료합니다."
+    echo "> 배포에 실패한 container 삭제"
+    IDLE_CONTAINER=$(find_idle_profile)
+    docker-compose -f docker-compose.prod.yml rm -s -v -f "$IDLE_CONTAINER"
+    echo "> 실패한 docker latest image 삭제"
     docker rmi ghcr.io/"$ORGANIZATION"/"$REPOSITORY":latest
     exit 1
   fi
