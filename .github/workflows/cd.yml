@@ -1,9 +1,9 @@
 name: cd
 
 on:
-  push:
+  pull_request:
     branches:
-      - 'tmp'
+      - 'main'
 
 env:
   REPOSITORY: github-actions-test
