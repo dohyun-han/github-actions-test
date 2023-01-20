@@ -82,7 +82,7 @@ jobs:
           services.spring2.image: ghcr.io/${{ github.repository_owner }}/${{ env.REPOSITORY }}:latest
 
       - name: Make .env
-        run: printf "MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}\nMYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}\nMYSQL_ROOT_PASSWORD=${{ MYSQL_ROOT_PASSWORD }}" >> .env
+        run: printf "MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}\nMYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}\nMYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
 
       # 파일을 ssh를 통해 서버로 복사
       - name: Copy docker compose & Scripts & Nginx
