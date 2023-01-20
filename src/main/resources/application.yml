@@ -2,6 +2,10 @@
 spring:
   profiles:
     active: "build"
+    # build profile이 실행되면 secret도 함께 실행
+    group:
+      "build": "secret"
+
 ---
 # build config
 spring:
@@ -9,9 +13,7 @@ spring:
     activate:
       on-profile: "build"
   datasource:
-    url: "jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Seoul"
-    username: test
-    password: 1234
+    url: "jdbc:mysql://localhost:3308/test?serverTimezone=Asia/Seoul"
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
@@ -30,8 +32,8 @@ spring:
       on-profile: "local"
   datasource:
     url: "jdbc:mysql://local-db:3306/test?serverTimezone=Asia/Seoul"
-    username: local
-    password: 1234
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
