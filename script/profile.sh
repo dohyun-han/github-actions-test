@@ -6,7 +6,6 @@ function find_idle_profile() {
 
   if [ "$RESPONSE_CODE" -ge 400 ]
   then
-    echo "RESPONSE_CODE error"
     CURRENT_PROFILE=spring2
   else
     CURRENT_PROFILE=$(curl -s http://localhost/profile)
