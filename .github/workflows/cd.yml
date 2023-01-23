@@ -92,7 +92,9 @@ jobs:
           script: |
             if [ -f ~/nginx/conf.d/service-url.inc ]
             then
+              cat ~/${{ env.REPOSITORY }}/nginx/prod/conf.d/service-url.inc
               cp -f ~/nginx/conf.d/service-url.inc ~/${{ env.REPOSITORY }}/nginx/prod/conf.d
+              cat ~/${{ env.REPOSITORY }}/nginx/prod/conf.d/service-url.inc
             fi
             mkdir -p nginx && cp -r ~/${{ env.REPOSITORY }}/nginx/prod/* ~/nginx && rm -rf ~/${{ env.REPOSITORY }}/nginx
             cd ~/${{ env.REPOSITORY }}
