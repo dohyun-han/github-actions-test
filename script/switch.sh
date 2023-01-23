@@ -13,7 +13,7 @@ function switch_proxy(){
   echo "Nginx container restart"
   docker exec -i nginx nginx -s reload
 
-  for RETRY_COUNT in {1...5}
+  for RETRY_COUNT in $(seq 1 5)
   do
     ACTIVE_CONTAINER=$(find_idle_profile)
     if [ "$IDLE_CONTAINER" != "$ACTIVE_CONTAINER" ]

@@ -18,7 +18,6 @@ function find_idle_profile() {
   else
     IDLE_PROFILE=spring1
   fi
-  printf "$RESPONSE_CODE, $CURRENT_PROFILE\n" >> ~/my.log
 
   echo "$IDLE_PROFILE"
 }
