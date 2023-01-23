@@ -21,7 +21,7 @@ function switch_proxy(){
       break
     fi
     echo "Switch delayed"
-    sleep 0.5
+    sleep 0.3
     if [ "$RETRY_COUNT" -eq 5 ]
     then
       echo "Nginx 전환에 실패했습니다."
