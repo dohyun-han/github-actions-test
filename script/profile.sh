@@ -18,9 +18,9 @@ function find_idle_profile() {
   else
     IDLE_PROFILE=spring1
   fi
+  printf "$RESPONSE_CODE, $CURRENT_PROFILE\n" >> ~/my.log
 
   echo "$IDLE_PROFILE"
-  echo "profile $RESPONSE_CODE $CURRENT_PROFILE"
 }
 
 # 쉬고 있는 profile의 port 찾기
