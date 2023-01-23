@@ -20,6 +20,7 @@ function find_idle_profile() {
   fi
 
   echo "$IDLE_PROFILE"
+  echo "profile $RESPONSE_CODE $CURRENT_PROFILE"
 }
 
 # 쉬고 있는 profile의 port 찾기
